@@ -3,4 +3,10 @@ project(Homework_2 C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(Homework_2 main.c console_communication.c console_communication.h consistent_realization.c consistent_realization.h parallel_realization.c parallel_realization.h)
+add_library(consistent STATIC consistent/consistent_realization.c consistent/consistent_realization.h)
+add_library(parallel SHARED consistent/consistent_realization.h parallel/parallel_realization.c)
+
+target_link_libraries(${APP_NAME} consistent)
+target_link_libraries(${APP_NAME} parallel)
+
+add_executable(Homework_2 main.c console_communication.c console_communication.h consistent/consistent_realization.c consistent/consistent_realization.h parallel/parallel_realization.c parallel/parallel_realization.h)

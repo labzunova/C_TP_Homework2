@@ -6,8 +6,8 @@
 #include <malloc.h>
 #include <stdio.h>
 #include "console_communication.h"
-#include "consistent_realization.h"
-#include "parallel_realization.h"
+#include "consistent/consistent_realization.h"
+#include "parallel/parallel_realization.h"
 #define CONSISTENT_METHOD 1
 #define PARALLEL_METHOD 2
 

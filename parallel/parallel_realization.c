@@ -1,5 +1,5 @@
 #include "parallel_realization.h"
-#include "console_communication.h"
+#include "../console_communication.h"
 #include <pthread.h>
 #include <unistd.h>
 #include <stdio.h>
