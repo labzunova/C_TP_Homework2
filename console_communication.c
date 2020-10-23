@@ -66,7 +66,8 @@ void sequences_reading( char ** sequences, int count )
 {
     for ( int i = 0; i < count; i++ )
     {
-        sequences[i] = ( char * )malloc( sizeof( char ) * 10 ) ; // TODO: come up smth with this magic number
+        sequences[i] = ( char * )malloc( sizeof( char ) * 10 ); // TODO: come up smth with this magic number
+        if ( !sequences[i] ) cant_allocate();
         printf_s( " %d sequence:\n", i+1 );
         printf_s( "Enter a sequence: \n" );
         while ( scanf( "%s", sequences[i] ) != 1 )

@@ -35,7 +35,7 @@ int main()
     int amount_of_every_sequence[count];
     if ( method == CONSISTENT_METHOD )
     {
-        if ( number_of_sequences( sequences, amount_of_every_sequence, count ) == -1 ) return -1;
+        if ( number_of_sequences( sequences, amount_of_every_sequence, count, "homework2.txt") == -1 ) return -1;
 
         for ( int i = 0; i < count; i++ )
         {
@@ -44,7 +44,7 @@ int main()
     } else
     if ( method == PARALLEL_METHOD )
     {
-        if ( number_of_sequences_parallel( sequences, amount_of_every_sequence, count ) == -1 ) return -1;
+        if ( number_of_sequences_parallel( sequences, amount_of_every_sequence, count, "homework2.txt" ) == -1 ) return -1;
         for ( int i = 0; i < count; i++ )
         {
             result_output( sequences[i], amount_of_every_sequence[i] );
