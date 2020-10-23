@@ -1,5 +1,6 @@
 #include "consistent_realization.h"
 #include "../console_communication.h"
+#include "../console_communication.c"
 #include <stdio.h>
 #include <string.h>
 

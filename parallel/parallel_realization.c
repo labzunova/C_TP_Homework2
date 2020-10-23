@@ -1,5 +1,6 @@
 #include "parallel_realization.h"
 #include "../console_communication.h"
+#include "../console_communication.c" // ??? for tests
 #include <pthread.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -74,4 +75,5 @@ int number_of_sequences_parallel( char ** sequences, int * amount_of_every_seque
 
     free(threads);
     free(thread_data);
+    return 0;
 }
