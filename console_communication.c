@@ -42,26 +42,6 @@ int choose_method()
     else return PARALLEL_METHOD;
 }
 
-/* char * sequence_reading( int i )
-{
-    char * sequence;
-    printf_s( " %d sequence:\n", i+1 );
-
-    printf_s( "Enter a sequence: \n" );
-    //scanf( "%s", sequence );
-    while ( ( scanf( "%s", sequence ) != 1 ) )
-    {
-        printf_s(" !Enter a sequence: \n");
-        while( getchar() != '\n' );
-    };
-    //gets(sequence);
-
-    //printf_s(" im here \n");
-
-    printf_s( "\n" );
-    return sequence;
-} */
-
 void sequences_reading( char ** sequences, int count )
 {
     for ( int i = 0; i < count; i++ )

@@ -17,25 +17,13 @@ int main()
     char ** sequences;
     sequences = ( char ** ) malloc(count * sizeof( char * ) ) ;
     if ( !sequences ) cant_allocate();
-  /*for ( int i = 0; i < count; i++ )
-    {
-        sequences[i] = ( char * )malloc(  sizeof( char ) * 10 ) ;
-        sequences[i] = sequence_reading( i );
-        printf_s( "'%s' sequence\n", sequences[0] );
-        printf_s( "'%s' sequence\n", sequences[i] );
-    } */
     sequences_reading( sequences, count );
-
-   /* for ( int i = 0; i < count; i++ )
-    {
-        printf_s( "'%s' sequence\n", sequences[i] );
-    } */
 
     int method = choose_method();
     int amount_of_every_sequence[count];
     if ( method == CONSISTENT_METHOD )
     {
-        if ( number_of_sequences( sequences, amount_of_every_sequence, count, "C:/Homework 2/files/homework2.txt") == -1 ) return -1;
+        if ( number_of_sequences( sequences, amount_of_every_sequence, count, "D:/projects/C,C++ TechPark/Homework 2/files/test1.txt") == -1 ) return -1;
 
         for ( int i = 0; i < count; i++ )
         {
@@ -44,16 +32,14 @@ int main()
     } else
     if ( method == PARALLEL_METHOD )
     {
-        if ( number_of_sequences_parallel( sequences, amount_of_every_sequence, count, "C:/Homework 2/files/homework2.txt" ) == -1 ) return -1;
+        if ( number_of_sequences_parallel( sequences, amount_of_every_sequence, count, "D:/projects/C,C++ TechPark/Homework 2/files/test1.txt" ) == -1 ) return -1;
         for ( int i = 0; i < count; i++ )
         {
             result_output( sequences[i], amount_of_every_sequence[i] );
         }
     }
 
-    /*for ( int i = 0; i < count; i++ )
-        free( sequences[i] );*/
-    free( sequences ); // TODO: like this?
-    free( amount_of_every_sequence );
+    for ( int i = 0; i < count; i++ ) free( sequences[i] );
+    free( sequences );
     return 0;
 }

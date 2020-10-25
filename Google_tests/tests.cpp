@@ -6,23 +6,17 @@ extern "C" {
 #include "../parallel/parallel_realization.h"
 #include "../consistent/consistent_realization.h"
 }
-#define SEQUENCE_1 "aa"
-#define SEQUENCE_2 "bb"
-#define SEQUENCE_3 "zz"
 #include <iostream>
 #include <chrono>
-#define TESTFILE_1 "C:/Homework 2/files/homework2.txt"
-#define TESTFILE_2 "C:/Homework 2/files/100mb.txt"
+#define TESTFILE_1 "D:/projects/C,C++ TechPark/Homework 2/files/test1.txt"
+#define TESTFILE_2 "D:/projects/C,C++ TechPark/Homework 2/files/100mb.txt"
 #define TESTFILE_3 "stress_test"
+#define TESTFILE_4 "D:/projects/C,C++ TechPark/Homework 2/files/test2.txt"
 #define SIZE 3
 #define MINASCII 97
 #define MAXASCII 122
 using namespace std::chrono;
 
-void load_dll()
-{
-
-}
 
 TEST( comparison, 3_sequences )
 {
@@ -53,8 +47,11 @@ TEST( comparison, 3_sequences )
     number_of_sequences_parallel( sequences, amount_of_every_sequence_parallel, SIZE, (char * ) TESTFILE_1 );
 
     for ( int i = 0; i < SIZE; i++ )
+    {
         ASSERT_EQ( amount_of_every_sequence_consistent[i], amount_of_every_sequence_parallel[i] );
-    free( sequences ); // ?
+        free( sequences[i] );
+    }
+    free( sequences );
 
     FreeLibrary(hDLL); // Выгрузка динамической библиотеки из памяти
 }
@@ -93,9 +90,11 @@ TEST( comparison, file_100mb )
     std::cout << "\nparallel: " << parallel.count() << " sec";
 
     for ( int i = 0; i < SIZE; i++ )
+    {
         ASSERT_EQ( amount_of_every_sequence_consistent[i], amount_of_every_sequence_parallel[i] );
-    free( sequences ); // ?
-
+        free( sequences[i] );
+    }
+    free( sequences );
     FreeLibrary(hDLL); // Выгрузка динамической библиотеки из памяти
 }
 
@@ -134,9 +133,6 @@ TEST( comparison, stress )
     sequences[0][1] = ( char ) ( rand() % ( MAXASCII - MINASCII + 1 ) +  MINASCII );
     sequences[1][1] = ( char ) ( rand() % ( MAXASCII - MINASCII + 1 ) +  MINASCII );
     sequences[2][1] = ( char ) ( rand() % ( MAXASCII - MINASCII + 1 ) +  MINASCII );
-  /*  strcpy( sequences[0], ( char ) ( rand() % ( MAXASCII - MINASCII + 1 ) +  MINASCII ) );
-    strcpy( sequences[1], ( char ) ( rand() % ( MAXASCII - MINASCII + 1 ) +  MINASCII ) );
-    strcpy( sequences[2], ( char ) ( rand() % ( MAXASCII - MINASCII + 1 ) +  MINASCII ) );*/
 
     int amount_of_every_sequence_consistent[SIZE];
     int amount_of_every_sequence_parallel[SIZE];
@@ -144,7 +140,117 @@ TEST( comparison, stress )
     number_of_sequences_parallel( sequences, amount_of_every_sequence_parallel, SIZE, (char * ) TESTFILE_3 );
 
     for ( int i = 0; i < SIZE; i++ )
+    {
         ASSERT_EQ( amount_of_every_sequence_consistent[i], amount_of_every_sequence_parallel[i] );
-    free( sequences ); // ?
+        free( sequences[i] );
+    }
+    free( sequences );
     FreeLibrary(hDLL);
 }
+
+TEST( consistent, 1st )
+{
+    char ** sequences = ( char ** )malloc( SIZE * sizeof( char * ) );
+
+    for( int i = 0; i < SIZE; i++ )
+        sequences[i] = ( char * )malloc( sizeof( char ) * SIZE );
+
+    strcpy( sequences[0], ( "aa" ) );
+    strcpy( sequences[1], ( "bb" ) );
+    strcpy( sequences[2], ( "zz" ) );
+
+    int amount_of_every_sequence_consistent[SIZE];
+
+    number_of_sequences( sequences, amount_of_every_sequence_consistent, SIZE, (char * ) TESTFILE_1 );
+
+    ASSERT_EQ( amount_of_every_sequence_consistent[0], 3 );
+    ASSERT_EQ( amount_of_every_sequence_consistent[1], 0 );
+    ASSERT_EQ( amount_of_every_sequence_consistent[2], 0 );
+    for ( int i = 0; i < SIZE; i++ ) free( sequences[i] );
+    free( sequences );
+}
+
+TEST( consistent, 2nd )
+{
+    char ** sequences = ( char ** )malloc( SIZE * sizeof( char * ) );
+
+    for( int i = 0; i < SIZE; i++ )
+        sequences[i] = ( char * )malloc( sizeof( char ) * SIZE );
+
+    strcpy( sequences[0], ( "Hello" ) );
+    strcpy( sequences[1], ( "world" ) );
+    strcpy( sequences[2], ( "!" ) );
+
+    int amount_of_every_sequence_consistent[SIZE];
+
+    number_of_sequences( sequences, amount_of_every_sequence_consistent, SIZE, (char * ) TESTFILE_4 );
+
+    ASSERT_EQ( amount_of_every_sequence_consistent[0], 9 );
+    ASSERT_EQ( amount_of_every_sequence_consistent[1], 9 );
+    ASSERT_EQ( amount_of_every_sequence_consistent[2], 9 );
+    for ( int i = 0; i < SIZE; i++ ) free( sequences[i] );
+    free( sequences );
+}
+
+TEST( parallel, 1st )
+{
+    typedef void __cdecl (*dll_func)( char ** sequences, int * amount_of_every_sequence, int count, char * filename );
+    dll_func number_of_sequences_parallel = NULL;
+    HMODULE hDLL = LoadLibrary("../libparallel.dll");
+    if (!hDLL) FAIL();
+    number_of_sequences_parallel = (dll_func)GetProcAddress(hDLL, "number_of_sequences_parallel");
+    if (!number_of_sequences_parallel) FAIL();
+
+    char ** sequences = ( char ** )malloc( SIZE * sizeof( char * ) );
+
+    for( int i = 0; i < SIZE; i++ )
+        sequences[i] = ( char * )malloc( sizeof( char ) * SIZE );
+
+    strcpy( sequences[0], ( "aa" ) );
+    strcpy( sequences[1], ( "bb" ) );
+    strcpy( sequences[2], ( "zz" ) );
+
+    int amount_of_every_sequence_parallel[SIZE];
+
+    number_of_sequences_parallel( sequences, amount_of_every_sequence_parallel, SIZE, (char * ) TESTFILE_1 );
+
+    ASSERT_EQ( amount_of_every_sequence_parallel[0], 3 );
+    ASSERT_EQ( amount_of_every_sequence_parallel[1], 0 );
+    ASSERT_EQ( amount_of_every_sequence_parallel[2], 0 );
+    for ( int i = 0; i < SIZE; i++ ) free( sequences[i] );
+    free( sequences );
+
+    FreeLibrary(hDLL);
+}
+
+TEST( parallel, 2nd )
+{
+    typedef void __cdecl (*dll_func)( char ** sequences, int * amount_of_every_sequence, int count, char * filename );
+    dll_func number_of_sequences_parallel = NULL;
+    HMODULE hDLL = LoadLibrary("../libparallel.dll");
+    if (!hDLL) FAIL();
+    number_of_sequences_parallel = (dll_func)GetProcAddress(hDLL, "number_of_sequences_parallel");
+    if (!number_of_sequences_parallel) FAIL();
+
+    char ** sequences = ( char ** )malloc( SIZE * sizeof( char * ) );
+
+    for( int i = 0; i < SIZE; i++ )
+        sequences[i] = ( char * )malloc( sizeof( char ) * SIZE );
+
+    strcpy( sequences[0], ( "Hello" ) );
+    strcpy( sequences[1], ( "world" ) );
+    strcpy( sequences[2], ( "!" ) );
+
+    int amount_of_every_sequence_parallel[SIZE];
+
+    number_of_sequences_parallel( sequences, amount_of_every_sequence_parallel, SIZE, (char * ) TESTFILE_4 );
+
+    ASSERT_EQ( amount_of_every_sequence_parallel[0], 9 );
+    ASSERT_EQ( amount_of_every_sequence_parallel[1], 9 );
+    ASSERT_EQ( amount_of_every_sequence_parallel[2], 9 );
+    for ( int i = 0; i < SIZE; i++ ) free( sequences[i] );
+    free( sequences );
+
+    FreeLibrary(hDLL);
+}
+
