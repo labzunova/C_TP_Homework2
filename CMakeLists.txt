@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD 14)
 
 add_library(consistent STATIC consistent/consistent_realization.c consistent/consistent_realization.h )
-add_library(parallel SHARED consistent/consistent_realization.h parallel/parallel_realization.c)
+add_library(parallel SHARED parallel/parallel_realization.h parallel/parallel_realization.c)
 
 target_link_libraries(${APP_NAME} consistent)
 target_link_libraries(${APP_NAME} parallel)
