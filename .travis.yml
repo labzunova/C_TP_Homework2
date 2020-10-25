@@ -41,4 +41,4 @@ script:
   - valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes chmod a+x ./tests.cpp
   - chmod a+x ./tests.cpp
   - sudo apt-get install -y gcovr
-  - cd ../ && gcovr -r .
+  - cd ../parallel && gcovr -r .
