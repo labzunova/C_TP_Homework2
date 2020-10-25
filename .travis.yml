@@ -28,6 +28,7 @@ install:
   - sudo cp -a libgtest_main.so libgtest.so /usr/lib/
   - which valgrind
   - cd "${TRAVIS_BUILD_DIR}"
+  - mkdir build && cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=--coverage -DCMAKE_C_FLAGS=--coverage -G "CodeBlocks - Unix Makefiles" .. && ls -la
 
 script:
   - cppcheck console_communication.c console_communication.h consistent/consistent_realization.c consistent/consistent_realization.h Google_tests/tests.cpp consistent/consistent_realization.h parallel/parallel_realization.c
