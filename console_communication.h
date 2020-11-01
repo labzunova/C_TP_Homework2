@@ -4,6 +4,7 @@
 int count_reading();
 void cant_allocate();
 void cant_open_file();
+void mapping_failed();
 void cant_create_thread();
 char * sequence_reading( int i );
 int choose_method();

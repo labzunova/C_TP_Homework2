@@ -6,21 +6,33 @@
 #include <stdlib.h>
 #include <string.h>
 #include <malloc.h>
+#include <sys/mman.h>
+#ifdef __linux__
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#endif
 
 static int finder( char * sequence, char * filename )
 {
-    FILE *fff;
-    if ( ( fff = fopen( filename, "r" ) ) == NULL ) // TODO path
+    int fff = open( filename, O_RDONLY );
+    struct stat st;
+    stat(filename, &st);
+    size_t file_size = st.st_size;
+    char *region = mmap( NULL, file_size, PROT_READ,  PROT_READ | PROT_WRITE, fff, 0 );
+    if ( region == MAP_FAILED )
     {
-        cant_open_file();
-        exit(-1);
+        mapping_failed();
+        exit( -1 );
     }
 
     int amount = 0;
     char c = '\0';
     int matches = 0;
-    while ( ( c = fgetc( fff ) ) != EOF )
+    for( int j = 0; j < file_size; j++ )
     {
+        c = region[j];
         if ( c == sequence[matches] )
             matches++;
         else
@@ -32,7 +44,12 @@ static int finder( char * sequence, char * filename )
             matches = 0;
         }
     }
-    fclose(fff);
+    close(fff);
+    if (munmap(region, file_size) != 0)
+    {
+        mapping_failed();
+        exit( -1 );
+    }
     return amount;
 }
 

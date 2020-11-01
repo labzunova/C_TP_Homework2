@@ -18,17 +18,22 @@ int count_reading()
 
 void cant_allocate()
 {
-    printf_s( "\n! ERROR: can't allocate memory" );
+    printf( "\n! ERROR: can't allocate memory" );
 }
 
 void cant_open_file()
 {
-    printf_s( "\n! ERROR: can't open file" );
+    printf( "\n! ERROR: can't open file" );
 }
 
 void cant_create_thread()
 {
-    printf_s( "\n! ERROR: can't create thread" );
+    printf( "\n! ERROR: can't create thread" );
+}
+
+void mapping_failed()
+{
+    printf("Mapping Failed\n");
 }
 
 int choose_method()
@@ -55,11 +60,11 @@ void sequences_reading( char ** sequences, int count )
             free( sequences );
             exit(-1);
         }
-        printf_s( " %d sequence:\n", i+1 );
-        printf_s( "Enter a sequence: \n" );
+        printf(" %d sequence:\n", i+1 );
+        printf( "Enter a sequence: \n" );
         while ( scanf( "%s", sequences[i] ) != 1 )
         {
-            printf_s(" !Enter a sequence: \n");
+            printf(" !Enter a sequence: \n");
             while( getchar() != '\n' );
         };
     }
@@ -67,5 +72,5 @@ void sequences_reading( char ** sequences, int count )
 
 void result_output(char * sequence, int amount)
 {
-    printf_s( "'%s' sequence amount in file is %d:\n", sequence, amount );
+    printf( "'%s' sequence amount in file is %d:\n", sequence, amount );
 }
