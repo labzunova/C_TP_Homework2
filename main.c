@@ -5,7 +5,7 @@
 
 #include <malloc.h>
 #include <stdlib.h>
-#include <sys/mman.h>
+#include <sys/mman.h> 
 //#include "console_communication.h"
 #include "consistent/consistent_realization.h"
 #include "parallel/parallel_realization.h"
