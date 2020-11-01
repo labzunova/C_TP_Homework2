@@ -19,13 +19,16 @@ int count_reading()
 void cant_allocate()
 {
     printf_s( "\n! ERROR: can't allocate memory" );
-    exit( -1 );
 }
 
 void cant_open_file()
 {
     printf_s( "\n! ERROR: can't open file" );
-    exit( -1 );
+}
+
+void cant_create_thread()
+{
+    printf_s( "\n! ERROR: can't create thread" );
 }
 
 int choose_method()
@@ -47,7 +50,11 @@ void sequences_reading( char ** sequences, int count )
     for ( int i = 0; i < count; i++ )
     {
         sequences[i] = ( char * )malloc( sizeof( char ) * 10 ); // TODO: come up smth with this magic number
-        if ( !sequences[i] ) cant_allocate();
+        if ( !sequences[i] ){
+            cant_allocate();
+            free( sequences );
+            exit(-1);
+        }
         printf_s( " %d sequence:\n", i+1 );
         printf_s( "Enter a sequence: \n" );
         while ( scanf( "%s", sequences[i] ) != 1 )

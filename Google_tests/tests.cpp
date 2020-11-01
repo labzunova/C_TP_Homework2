@@ -8,10 +8,10 @@ extern "C" {
 }
 #include <iostream>
 #include <chrono>
-#define TESTFILE_1 "D:/projects/C,C++ TechPark/Homework 2/files/test1.txt"
-#define TESTFILE_2 "D:/projects/C,C++ TechPark/Homework 2/files/100mb.txt"
-#define TESTFILE_3 "stress_test"
-#define TESTFILE_4 "D:/projects/C,C++ TechPark/Homework 2/files/test2.txt"
+#define TESTFILE_1 "../files/test1.txt"
+#define TESTFILE_2 "../files/100mb.txt"
+#define TESTFILE_3 "../files/stress_test"
+#define TESTFILE_4 "../files/test2.txt"
 #define SIZE 3
 #define MINASCII 97
 #define MAXASCII 122
